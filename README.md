@@ -1,1 +1,3 @@
-# Typing-Test-JS
+This is a small typing test application created using HTML, CSS and JavaScript. The idea of converting the quote string's letters into spans and then adding corresponding 'correct' or 'wrong' classes to them for color coding I got from Kyle from Web Dev Simplified in his video "Build A Speed Typing Game With JavaScript - Tutorial". 
+The entire code was written by myself. This is the first commit for the project files. I am yet to add the timing functionality and calculation for WPM.
+Later on, I'll add comments and structure the code better, and add some new features (perhaps a car like in typeRacer?)
