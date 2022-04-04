@@ -8,4 +8,4 @@ New functionalities added:
 Functionalities that I hope to add soon:
 -> A button which upon finishing the quote can show details about the quote
 -> A log-in mechanism for users. Each user can see their say 5 most recent WPMs and their all-time average WPM. 
--> A mechanism to choose which car will be display on top. 
+-> A mechanism to choose which car will be displayed. 
