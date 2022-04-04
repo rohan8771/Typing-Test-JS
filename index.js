@@ -2,6 +2,11 @@ const API_URL = "https://api.quotable.io/random";
 
 const textContainerGiven = document.querySelector('.text_container__given')
 const textContainerWritten = document.querySelector('.text_container__written')
+const timer = document.querySelector('.timer');
+const wpmDiv = document.querySelector('.wpm')
+
+let started = false;
+let timerInterval;
 
 const getAndRenderNewText = async function() {
     try {
@@ -17,6 +22,9 @@ const getAndRenderNewText = async function() {
             newSpan.innerText = element;
             textContainerGiven.appendChild(newSpan);
         })
+        
+        //Make timer zero
+        timer.innerText = '0';
     }
     catch(err) {
         console.log("ERROR: ")
@@ -27,6 +35,15 @@ const getAndRenderNewText = async function() {
 getAndRenderNewText();
 
 const checkInput = function() {
+    if(!started) {
+        started = true;
+        //Start timer
+        timerInterval = setInterval(()=>{
+            const timerValue = Number(timer.innerText);
+            timer.innerText = String(timerValue + 1); 
+        }, 1000)
+    }
+
     const allSpans = textContainerGiven.querySelectorAll('span');
     const currentInput = textContainerWritten.value;
     let completelyCorrect = true;
@@ -47,8 +64,19 @@ const checkInput = function() {
         }
     })
     if(completelyCorrect) {
-        getAndRenderNewText();
+        calculateAndRenderWPM();
+
         textContainerWritten.value = '';
+        started = false;
+        clearInterval(timerInterval)
+        getAndRenderNewText();
     }
 }
 textContainerWritten.addEventListener('input', checkInput);
+
+const calculateAndRenderWPM = function() {
+    const timerVal = Number(timer.innerText);
+    const numberOfWords = textContainerWritten.value.split(' ').length;
+    const wpm = (numberOfWords/timerVal * 60);
+    wpmDiv.innerText = wpm + ' WPM';
+}
