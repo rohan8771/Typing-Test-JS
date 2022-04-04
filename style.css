@@ -15,6 +15,7 @@ body {
 }
 
 .container {
+    position: relative;
     margin: auto;
     height: 100vh;
     display: flex;
@@ -64,4 +65,17 @@ body {
 .wpm {
     margin-top: 3rem;
     font-size: 3rem;
+}
+
+.carImg {
+    height: 50px;
+    width: 50px;
+    /* margin: auto; */
+}
+
+.carDiv {
+    position: absolute;
+    /* left: 10px; */
+    top: 85px;
+    width: 100%;
 }

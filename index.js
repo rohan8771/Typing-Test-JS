@@ -4,9 +4,14 @@ const textContainerGiven = document.querySelector('.text_container__given')
 const textContainerWritten = document.querySelector('.text_container__written')
 const timer = document.querySelector('.timer');
 const wpmDiv = document.querySelector('.wpm')
+const carImg = document.querySelector('.carImg');
 
 let started = false;
 let timerInterval;
+let wpmInterval;
+let textLength;
+let carStopped = false;
+let carStoppedIndex = 0;
 
 const getAndRenderNewText = async function() {
     try {
@@ -25,6 +30,12 @@ const getAndRenderNewText = async function() {
         
         //Make timer zero
         timer.innerText = '0';
+
+        textLength = text.length; //To be used by handleCar
+
+        //Revert car to original position
+        carImg.style.marginLeft = 0 + "%";
+
     }
     catch(err) {
         console.log("ERROR: ")
@@ -34,6 +45,18 @@ const getAndRenderNewText = async function() {
 
 getAndRenderNewText();
 
+const handleCar = function(inputLength) {
+    let travelled;
+    if(carStopped) {
+        travelled = ((carStoppedIndex+1)/textLength)*90;
+    }
+    else {
+        travelled = (inputLength/textLength)*90;
+    }
+
+    carImg.style.marginLeft = travelled + "%";
+}
+
 const checkInput = function() {
     if(!started) {
         started = true;
@@ -42,29 +65,48 @@ const checkInput = function() {
             const timerValue = Number(timer.innerText);
             timer.innerText = String(timerValue + 1); 
         }, 1000)
+
+        wpmInterval = setInterval(calculateAndRenderWPM, 2000)
     }
 
     const allSpans = textContainerGiven.querySelectorAll('span');
     const currentInput = textContainerWritten.value;
-    let completelyCorrect = true;
+    let correctSoFar = true;
     allSpans.forEach((theSpan, index) => {
         if(currentInput[index] == null) {
             theSpan.classList.remove('correct');
             theSpan.classList.remove('wrong');
-            completelyCorrect = false;
+            correctSoFar = false;
         }
         else if(currentInput[index] === theSpan.innerText) {
-            theSpan.classList.remove('wrong');
-            theSpan.classList.add('correct');
+            if(correctSoFar) {
+                theSpan.classList.remove('wrong');
+                theSpan.classList.add('correct');
+                carStopped = false;
+            }
+            else {
+                theSpan.classList.remove('correct');
+                theSpan.classList.add('wrong');
+            }
         }
         else {
             theSpan.classList.remove('correct');
             theSpan.classList.add('wrong');
-            completelyCorrect = false;
+            correctSoFar = false;
+
+            //Note first mistake index and stop the car here
+            if(!carStopped) {
+                carStoppedIndex = index;
+                carStopped = true;
+            }
         }
     })
-    if(completelyCorrect) {
+
+    handleCar(currentInput.length);
+
+    if(correctSoFar) {
         calculateAndRenderWPM();
+        clearInterval(wpmInterval);
 
         textContainerWritten.value = '';
         started = false;
