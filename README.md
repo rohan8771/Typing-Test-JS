@@ -4,8 +4,8 @@ The entire code was written by myself. I am hoping to add many additional functi
 New functionalities added:
 -> A WPM calculator that calculates and renders WPM every 2 seconds
 -> A car which goes to the right as you type correctly. If you type wrong, it stops at the location where you made the first error (like in TypeRacer)
+-> A button which upon finishing the quote shows details about the quote
 
 Functionalities that I hope to add soon:
--> A button which upon finishing the quote can show details about the quote
 -> A log-in mechanism for users. Each user can see their say 5 most recent WPMs and their all-time average WPM. 
 -> A mechanism to choose which car will be displayed. 
