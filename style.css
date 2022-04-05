@@ -32,9 +32,6 @@ body {
     font-size: 4rem;
 }
 
-.text_container {
-
-}
 
 .text_container__given {
     margin: 2rem calc(2px + 1rem);
@@ -78,4 +75,38 @@ body {
     /* left: 10px; */
     top: 85px;
     width: 100%;
+}
+
+.btn {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding: 5px 10px;
+    border: 2px solid rgb(57, 55, 55);
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+
+    margin-top: 20px;
+
+    transition: all 0.2s;
+}
+
+.infoBtn {
+    margin-top: 10px;
+}
+.btn:hover {
+    transform: translateY(-3px);
+}
+.btn:active {
+    transform: translateY(-2px);
+}
+
+.hidden {
+    display: none;
+}
+
+.quoteInfo {
+    margin: 10px;
+    text-align: center;
+    margin-top: 35px;
 }

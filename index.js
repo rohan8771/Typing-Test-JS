@@ -5,6 +5,10 @@ const textContainerWritten = document.querySelector('.text_container__written')
 const timer = document.querySelector('.timer');
 const wpmDiv = document.querySelector('.wpm')
 const carImg = document.querySelector('.carImg');
+const infoBtn = document.querySelector('.infoBtn');
+const nextBtn = document.querySelector('.nextBtn');
+const mainContainer = document.querySelector('.container');
+const quoteInfo = document.querySelector('.quoteInfo')
 
 let started = false;
 let timerInterval;
@@ -12,12 +16,14 @@ let wpmInterval;
 let textLength;
 let carStopped = false;
 let carStoppedIndex = 0;
+let responseJSON;
+let next
 
 const getAndRenderNewText = async function() {
     try {
         // Getting text
         const response = await fetch(API_URL);
-        const responseJSON = await response.json();
+        responseJSON = await response.json();
         const text = responseJSON.content;
         
         //Rendering text
@@ -35,6 +41,16 @@ const getAndRenderNewText = async function() {
 
         //Revert car to original position
         carImg.style.marginLeft = 0 + "%";
+
+        //Hide the buttons
+        infoBtn.classList.add('hidden');
+        nextBtn.classList.add('hidden');
+
+        //Clear written text
+        textContainerWritten.value = '';
+
+        //Clear quote info
+        quoteInfo.innerHTML = '';
 
     }
     catch(err) {
@@ -67,6 +83,7 @@ const checkInput = function() {
         }, 1000)
 
         wpmInterval = setInterval(calculateAndRenderWPM, 2000)
+
     }
 
     const allSpans = textContainerGiven.querySelectorAll('span');
@@ -108,10 +125,11 @@ const checkInput = function() {
         calculateAndRenderWPM();
         clearInterval(wpmInterval);
 
-        textContainerWritten.value = '';
         started = false;
         clearInterval(timerInterval)
-        getAndRenderNewText();
+
+        infoBtn.classList.remove('hidden');
+        nextBtn.classList.remove('hidden');
     }
 }
 textContainerWritten.addEventListener('input', checkInput);
@@ -119,6 +137,23 @@ textContainerWritten.addEventListener('input', checkInput);
 const calculateAndRenderWPM = function() {
     const timerVal = Number(timer.innerText);
     const numberOfWords = textContainerWritten.value.split(' ').length;
-    const wpm = (numberOfWords/timerVal * 60);
+    const wpm = Math.floor((numberOfWords/timerVal * 60));
     wpmDiv.innerText = wpm + ' WPM';
 }
+
+const showQuoteDetails = function() {
+    const category = responseJSON.tags[0];
+    const author = responseJSON.author;
+
+    const html = `
+                    <p class="author">Author: ${author}</p>
+                    <p class="category">Category: ${category}</p>
+                  `
+
+    quoteInfo.innerHTML = html;
+
+}
+
+infoBtn.addEventListener('click', showQuoteDetails)
+
+nextBtn.addEventListener('click', getAndRenderNewText)
