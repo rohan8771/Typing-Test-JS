@@ -7,8 +7,10 @@ const wpmDiv = document.querySelector('.wpm')
 const carImg = document.querySelector('.carImg');
 const infoBtn = document.querySelector('.infoBtn');
 const nextBtn = document.querySelector('.nextBtn');
-const mainContainer = document.querySelector('.container');
+const testContainer = document.querySelector('.containerTest');
+const loginContainer = document.querySelector('.containerLogin');
 const quoteInfo = document.querySelector('.quoteInfo')
+const userDetails = document.querySelector('.userDetails');
 
 let started = false;
 let timerInterval;
@@ -17,7 +19,7 @@ let textLength;
 let carStopped = false;
 let carStoppedIndex = 0;
 let responseJSON;
-let next
+let next;
 
 const getAndRenderNewText = async function() {
     try {
@@ -58,8 +60,6 @@ const getAndRenderNewText = async function() {
         console.log(err);
     }
 }
-
-getAndRenderNewText();
 
 const handleCar = function(inputLength) {
     let travelled;
@@ -157,3 +157,87 @@ const showQuoteDetails = function() {
 infoBtn.addEventListener('click', showQuoteDetails)
 
 nextBtn.addEventListener('click', getAndRenderNewText)
+
+
+
+
+////// IMPLEMENTING LOG-IN FUNCTIONALITY 
+let loggedIn = false;
+
+// Only when I am logged in, show the typing test container and render new text
+if(loggedIn) {
+    testContainer.classList.remove('hidden');
+    getAndRenderNewText()
+}
+// Probably no need of above
+
+let loggedUser; //This will store the name of the user logged in
+
+//This function will check if entered details are correct or not
+const checkDetails = function(event) {
+    event.preventDefault() //To prevent a page reload upon submitting form
+
+    const enteredName = nameInput.value;
+    const enteredPassword = passwordInput.value;
+    let foundUser = false;
+    loginData.forEach((user) => {
+        if(enteredName === user.name && enteredPassword === user.password) {
+            foundUser = true;
+        }
+    })
+    if(!foundUser) {
+       console.log("No such user");
+       return;
+    }
+
+    // Reaching here means input fields match a user
+    loggedUser = enteredName;
+    
+    //Hide the login container
+    loginContainer.classList.add('hidden');
+
+    //Show the typing test container
+    testContainer.classList.remove('hidden');
+
+    //Depending upon which user has logged in, details about user will be shown
+    
+    //Calcualte this user's all time average WPM
+    //Load from file the user's WPMs, and then take average
+    //In checkInput function, when the user correctly types the entire thing,
+    //add that WPM value to their file 
+    const allTimeAverageWPM = 105;
+    
+    userDetails.innerHTML = `
+        <p class="userName">Name: ${loggedUser}</p>
+        <p class="allTimeAverage">All time average: ${allTimeAverageWPM} WPM</p>
+    `;
+
+    //Get and render new text
+    getAndRenderNewText() 
+
+    
+}
+const loginForm = document.querySelector('.loginForm');
+const nameInput = document.getElementById('name')
+const passwordInput = document.getElementById('password')
+
+loginForm.addEventListener('submit', checkDetails)
+
+
+//Let me put some raw login data here. Later, I'll replace it with a file read
+//I'll come back to file read when I finish learning nodeJS
+const loginData = [
+    {
+        name: "Rohan",
+        password: "12345"
+    },
+    {
+        name: "Sandeep",
+        password: "11111"
+    },
+    {
+        name: "Shyamal",
+        password: "23456"
+    }
+]
+

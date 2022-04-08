@@ -14,7 +14,7 @@ body {
     font-weight: 500;
 }
 
-.container {
+.containerTest {
     position: relative;
     margin: auto;
     height: 100vh;
@@ -109,4 +109,16 @@ body {
     margin: 10px;
     text-align: center;
     margin-top: 35px;
+}
+
+.userDetails {
+    text-align: center;
+    margin-top: 15px;
+    border-top: 2px solid black;
+    padding-top: 10px;
+    width: 45%;
+}
+
+.userName {
+    margin-bottom: 2px;
 }
